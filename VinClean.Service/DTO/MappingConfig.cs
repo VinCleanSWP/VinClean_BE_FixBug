@@ -24,6 +24,7 @@ using VinClean.Service.DTO.Comment;
 using VinClean.Service.DTO.Category;
 using VinClean.Service.DTO.ProcessImage;
 using VinClean.Service.DTO.WorkingBy;
+using VinClean.Service.DTO.Building;
 
 namespace VinClean.Service.DTO
 {
@@ -43,16 +44,11 @@ namespace VinClean.Service.DTO
             CreateMap<VinClean.Repo.Models.Employee, EmployeeDTO>().ReverseMap();
             CreateMap<VinClean.Repo.Models.Employee, RegisterEmployeeDTO>().ReverseMap();
             CreateMap<VinClean.Repo.Models.Employee, UpdateEmployeeDTO>().ReverseMap();
-            CreateMap<VinClean.Repo.Models.FinshedBy, FinishedByDTO>().ReverseMap();
 
             CreateMap<Repo.Models.Blog, BlogDTO>().ReverseMap();
             CreateMap<Repo.Models.Comment, CommentDTO>().ReverseMap();
             CreateMap<Repo.Models.Category, CategoryDTO>().ReverseMap();
 
-            CreateMap<Repo.Models.ProcessImage, ProcessImageDTO>().ReverseMap();
-
-
-            CreateMap<Repo.Models.ServiceManage, ServiceDTO>().ReverseMap();
            
            CreateMap<VinClean.Repo.Models.Employee, EmployeeProfileDTO>().ReverseMap();
             CreateMap<VinClean.Repo.Models.Employee, ModifyEmployeeProfileDTO>().ReverseMap();
@@ -62,30 +58,22 @@ namespace VinClean.Service.DTO
             CreateMap<Repo.Models.Role, RoleDTO>().ReverseMap();
             CreateMap<Repo.Models.Service, ServiceDTO>().ReverseMap();
 
-            CreateMap<Repo.Models.Process, OrderDTO>().ReverseMap();
-
-            CreateMap<Repo.Models.Process, ProcessInfo>().ReverseMap();
-
             CreateMap<Repo.Models.Rating, RatingDTO>().ReverseMap();
             CreateMap<Repo.Models.Rating, RateServiceDTO>().ReverseMap();
-
-            CreateMap<ProcessDetail, ProcessDetailDTO>().ReverseMap();
-
-            CreateMap<ProcessSlot, OrderRequestDTO>().ReverseMap();
-
-            CreateMap<Repo.Models.Slot, SlotDTO>().ReverseMap();
 
 
             CreateMap<Repo.Models.Blog, BlogDTO>().ReverseMap();
             CreateMap<Repo.Models.Comment, CommentDTO>().ReverseMap();
             CreateMap<Repo.Models.Category, CategoryDTO>().ReverseMap();
 
+            CreateMap<Repo.Models.Building, BuildingDTO>().ReverseMap();
+            CreateMap<Repo.Models.BuildingType, BuildingTypeDTO>().ReverseMap();
+
             CreateMap<Repo.Models.Role, RoleDTO>().ReverseMap();
             CreateMap<Repo.Models.Service, ServiceDTO>().ReverseMap();
-            CreateMap<ServiceManage, ServiceManageDTO>().ReverseMap();
             CreateMap<VinClean.Repo.Models.Type, TypeDTO>().ReverseMap();
-            CreateMap<Repo.Models.WorkingBy, LocationDTO>().ReverseMap();
-            CreateMap<Repo.Models.WorkingBy, WorkingBy.UpdateLocation>().ReverseMap();
+            CreateMap<Repo.Models.Location, LocationDTO>().ReverseMap();
+            CreateMap<Repo.Models.Location, WorkingBy.UpdateLocation>().ReverseMap();
 
          
         }

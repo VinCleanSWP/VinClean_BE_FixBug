@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +10,7 @@ namespace VinClean.Repo.Models.ProcessModel
     {
         public int ProcessId { get; set; }
         public Customer Customer { get; set; }
+        public ICollection<Location> WorkingBies { get; set; }
         public string Status { get; set; }
         public string Note { get; set; }
         public bool IsDeleted { get; set; }

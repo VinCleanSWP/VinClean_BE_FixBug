@@ -63,5 +63,7 @@ public partial class Order
 
     public virtual ICollection<OrderRequest> OrderRequests { get; set; } = new List<OrderRequest>();
 
+    public virtual Rating? Rating { get; set; }
+
     public virtual Service? Service { get; set; }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VinClean.Repo.Models;
 using VinClean.Service.DTO;
+using VinClean.Service.DTO.Order;
 using VinClean.Service.DTO.Process;
 using VinClean.Service.Service;
 
@@ -19,7 +20,7 @@ namespace VinCleanDemo2.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<OrderModeDTO>>> Process()
+        public async Task<ActionResult<List<OrderModeDTO>>> Order()
         {
             return Ok(await _service.GetOrderList());
         }
@@ -29,7 +30,7 @@ namespace VinCleanDemo2.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Process>> GetById(int id)
+        public async Task<ActionResult<Order>> GetById(int id)
         {
             if (id <= 0)
             {
@@ -62,7 +63,7 @@ namespace VinCleanDemo2.Controllers
             return Ok(processFound);
         }
         [HttpPost]
-        public async Task<ActionResult<Process>> CreateProcess(NewBooking request)
+        public async Task<ActionResult<Order>> CreateOrder(NewBooking request)
         {
 
 
@@ -260,6 +261,40 @@ namespace VinCleanDemo2.Controllers
 
 
             var updateProcess = await _service.UpdateSubPrice(request);
+
+            if (updateProcess.Success == false && updateProcess.Message == "NotFound")
+            {
+                return Ok(updateProcess);
+            }
+
+            if (updateProcess.Success == false && updateProcess.Message == "RepoError")
+            {
+                ModelState.AddModelError("", $"Some thing went wrong in respository layer when updating Process {request}");
+                return StatusCode(500, ModelState);
+            }
+
+            if (updateProcess.Success == false && updateProcess.Message == "Error")
+            {
+                ModelState.AddModelError("", $"Some thing went wrong in service layer when updating Process {request}");
+                return StatusCode(500, ModelState);
+            }
+
+
+            return Ok(updateProcess);
+
+        }
+
+
+        [HttpPut("AssignEmployee")]
+        public async Task<ActionResult> AssignEmployee(AssignEmployeeDTO request)
+        {
+            if (request == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            var updateProcess = await _service.AssignEmployee(request);
 
             if (updateProcess.Success == false && updateProcess.Message == "NotFound")
             {

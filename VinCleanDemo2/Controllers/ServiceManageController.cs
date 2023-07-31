@@ -27,7 +27,7 @@ namespace VinClean.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Repo.Models.ServiceManage>> GetServerById(int id)
+        public async Task<ActionResult<Repo.Models.ServiceWorkIn>> GetServerById(int id)
         {
             if (id <= 0)
             {
@@ -43,7 +43,7 @@ namespace VinClean.Controllers
         
         
         [HttpPost]
-        public async Task<ActionResult<Repo.Models.ServiceManage>> CreateServiceManage(ServiceManageDTO request)
+        public async Task<ActionResult<Repo.Models.ServiceWorkIn>> CreateServiceManage(ServiceManageDTO request)
         {
 
 
