@@ -19,7 +19,7 @@ namespace VinCleanDemo2.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<OrderModeDTO>>> Process()
+        public async Task<ActionResult<List<OrderModeDTO>>> Order()
         {
             return Ok(await _service.GetOrderList());
         }
@@ -29,7 +29,7 @@ namespace VinCleanDemo2.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Process>> GetById(int id)
+        public async Task<ActionResult<Order>> GetById(int id)
         {
             if (id <= 0)
             {
@@ -62,7 +62,7 @@ namespace VinCleanDemo2.Controllers
             return Ok(processFound);
         }
         [HttpPost]
-        public async Task<ActionResult<Process>> CreateProcess(NewBooking request)
+        public async Task<ActionResult<Order>> CreateOrder(NewBooking request)
         {
 
 

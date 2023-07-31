@@ -94,6 +94,13 @@ builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<IProcessImageService, OrderImageService>();
 builder.Services.AddScoped<IOrderImageRepository, OrderImageRepository>();
 
+builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
+builder.Services.AddScoped<IBuildingService, BuildingService>();
+
+builder.Services.AddScoped<IBuildingTypeRepository, BuildingTypeRepository>();
+builder.Services.AddScoped<IBuildingTypeService, BuildingTypeService>();
+
+
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 

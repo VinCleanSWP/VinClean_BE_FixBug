@@ -10,9 +10,9 @@ namespace VinClean.Repo.Models.ProcessModel
     {
         public virtual Employee? Employee { get; set; }
 
-        public virtual Process? Process { get; set; }
+        public virtual Order? Process { get; set; }
 
-        public virtual WorkingBy? WorkingBy { get; set; }
+        public virtual Location? WorkingBy { get; set; }
 
     }
 }
