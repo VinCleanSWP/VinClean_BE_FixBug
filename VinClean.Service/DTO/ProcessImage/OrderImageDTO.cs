@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VinClean.Service.DTO.ProcessImage
 {
-    public class ProcessImageDTO
+    public class OrderImageDTO
     {
         public int Id { get; set; }
 

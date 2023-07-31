@@ -31,6 +31,7 @@ namespace VinClean.Service.Service
         Task<ServiceResponse<OrderDTO>> UpdateStatusCompleted(int id);
         Task<ServiceResponse<OrderDTO>> DeniedOrder(int id);
         Task<ServiceResponse<OrderDTO>> DeleteOrder(int id);
+        Task<ServiceResponse<OrderDTO>> AssignEmployee(AssignEmployeeDTO request);
     }
 
     public class OrderService : IOrderService
@@ -293,6 +294,46 @@ namespace VinClean.Service.Service
 
                 existingOrder.StartWorking = request.StartWorking;
                 existingOrder.Status = "Ordering";
+
+                if (!await _repository.UpdateOrder(existingOrder))
+                {
+                    _response.Success = false;
+                    _response.Message = "RepoError";
+                    _response.Data = null;
+                    return _response;
+                }
+
+                var _OrderDTO = _mapper.Map<OrderDTO>(existingOrder);
+                _response.Success = true;
+                _response.Data = _OrderDTO;
+                _response.Message = "Order Updated";
+
+            }
+            catch (Exception ex)
+            {
+                _response.Success = false;
+                _response.Data = null;
+                _response.Message = "Error";
+                _response.ErrorMessages = new List<string> { Convert.ToString(ex.Message) };
+            }
+            return _response;
+        }
+
+        public async Task<ServiceResponse<OrderDTO>> AssignEmployee(AssignEmployeeDTO request)
+        {
+            ServiceResponse<OrderDTO> _response = new();
+            try
+            {
+                var existingOrder = await _repository.GetOrderById(request.OrderId);
+                if (existingOrder == null)
+                {
+                    _response.Success = false;
+                    _response.Message = "NotFound";
+                    _response.Data = null;
+                    return _response;
+                }
+
+                existingOrder.EmployeeId = request.EmployeeId;
 
                 if (!await _repository.UpdateOrder(existingOrder))
                 {

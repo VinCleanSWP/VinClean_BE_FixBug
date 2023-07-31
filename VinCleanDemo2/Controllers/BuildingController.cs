@@ -43,6 +43,25 @@ namespace VinClean.Controllers
             return Ok(processFound);
         }
 
+        [HttpGet("Type/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BuildingDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<Order>> GetBuildingListByType(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest(id);
+            }
+            var processFound = await _buildingService.GetBuildingListByType(id);
+            if (processFound == null)
+            {
+                return NotFound();
+            }
+            return Ok(processFound);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Building>> CreateOrder(BuildingDTO request)
         {

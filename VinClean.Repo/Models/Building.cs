@@ -11,6 +11,8 @@ public partial class Building
 
     public int? TypeId { get; set; }
 
+    public int? Floor { get; set; }
+
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual BuildingType? Type { get; set; }

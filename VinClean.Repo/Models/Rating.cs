@@ -27,5 +27,7 @@ public partial class Rating
 
     public virtual Account? ModifiedByNavigation { get; set; }
 
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
     public virtual Service? Service { get; set; }
 }

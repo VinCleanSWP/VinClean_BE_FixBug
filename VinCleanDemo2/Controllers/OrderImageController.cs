@@ -10,46 +10,46 @@ namespace VinClean.Controllers
     [ApiController]
     public class OrderImageController : ControllerBase
     {
-        private readonly IProcessImageService _service;
-        public OrderImageController(IProcessImageService service)
+        private readonly IOrderImageService _service;
+        public OrderImageController(IOrderImageService service)
         {
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<List<ProcessImageDTO>>> Get()
+        public async Task<ActionResult<List<OrderImageDTO>>> Get()
         {
-            return Ok(await _service.ProcessImageList());
+            return Ok(await _service.OrderImageList());
         }
-        [HttpGet("Process/{id}")]
-        public async Task<ActionResult<List<ProcessImageDTO>>> GetbyProcessId(int id)
+        [HttpGet("Order/{id}")]
+        public async Task<ActionResult<List<OrderImageDTO>>> GetbyOrderId(int id)
         {
             if (id <= 0)
             {
                 return BadRequest(id);
             }
-            var ProcessImage = await _service.ProcessImageByProcessId(id);
-            if (ProcessImage == null)
+            var OrderImage = await _service.OrderImageByOrderId(id);
+            if (OrderImage == null)
             {
                 return NotFound();
             }
-            return Ok(ProcessImage);
+            return Ok(OrderImage);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProcessImageDTO>> GetbyId(int id)
+        public async Task<ActionResult<OrderImageDTO>> GetbyId(int id)
         {
             if (id <= 0)
             {
                 return BadRequest(id);
             }
-            var ProcessImage = await _service.ProcessImageById(id);
-            if (ProcessImage == null)
+            var OrderImage = await _service.OrderImageById(id);
+            if (OrderImage == null)
             {
                 return NotFound();
             }
-            return Ok(ProcessImage);
+            return Ok(OrderImage);
         }
         [HttpPut]
-        public async Task<ActionResult> UpdateProcessImage(ProcessImageDTO request)
+        public async Task<ActionResult> UpdateOrderImage(OrderImageDTO request)
         {
             if (request == null)
             {
@@ -57,27 +57,27 @@ namespace VinClean.Controllers
             }
 
 
-            var updateProcessImg = await _service.UpdateProcessImage(request);
+            var updateOrderImg = await _service.UpdateOrderImage(request);
 
-            if (updateProcessImg.Success == false && updateProcessImg.Message == "NotFound")
+            if (updateOrderImg.Success == false && updateOrderImg.Message == "NotFound")
             {
-                return Ok(updateProcessImg);
+                return Ok(updateOrderImg);
             }
 
-            if (updateProcessImg.Success == false && updateProcessImg.Message == "RepoError")
+            if (updateOrderImg.Success == false && updateOrderImg.Message == "RepoError")
             {
                 ModelState.AddModelError("", $"Some thing went wrong in respository layer when updating account {request}");
                 return StatusCode(500, ModelState);
             }
 
-            if (updateProcessImg.Success == false && updateProcessImg.Message == "Error")
+            if (updateOrderImg.Success == false && updateOrderImg.Message == "Error")
             {
                 ModelState.AddModelError("", $"Some thing went wrong in service layer when updating account {request}");
                 return StatusCode(500, ModelState);
             }
 
 
-            return Ok(updateProcessImg);
+            return Ok(updateOrderImg);
 
         }
 
@@ -90,32 +90,32 @@ namespace VinClean.Controllers
             }
 
 
-            var updateProcessImg = await _service.UpdateImage(request);
+            var updateOrderImg = await _service.UpdateImage(request);
 
-            if (updateProcessImg.Success == false && updateProcessImg.Message == "NotFound")
+            if (updateOrderImg.Success == false && updateOrderImg.Message == "NotFound")
             {
-                return Ok(updateProcessImg);
+                return Ok(updateOrderImg);
             }
 
-            if (updateProcessImg.Success == false && updateProcessImg.Message == "RepoError")
+            if (updateOrderImg.Success == false && updateOrderImg.Message == "RepoError")
             {
                 ModelState.AddModelError("", $"Some thing went wrong in respository layer when updating account {request}");
                 return StatusCode(500, ModelState);
             }
 
-            if (updateProcessImg.Success == false && updateProcessImg.Message == "Error")
+            if (updateOrderImg.Success == false && updateOrderImg.Message == "Error")
             {
                 ModelState.AddModelError("", $"Some thing went wrong in service layer when updating account {request}");
                 return StatusCode(500, ModelState);
             }
 
 
-            return Ok(updateProcessImg);
+            return Ok(updateOrderImg);
 
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProcessImageDTO>> AddWB(ProcessImageDTO request)
+        public async Task<ActionResult<OrderImageDTO>> AddWB(OrderImageDTO request)
         {
             /*            if(request == null)
                         {
@@ -126,7 +126,7 @@ namespace VinClean.Controllers
                             return BadRequest(ModelState);
                         }*/
 
-            var newPImg = await _service.AddProcessImage(request);
+            var newPImg = await _service.AddOrderImage(request);
             if (newPImg.Success == false && newPImg.Message == "Exist")
             {
                 return Ok(newPImg);
@@ -147,9 +147,9 @@ namespace VinClean.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteProcessImage(int id)
+        public async Task<ActionResult> DeleteOrderImage(int id)
         {
-            var deletePImg = await _service.DeleteProcessImage(id);
+            var deletePImg = await _service.DeleteOrderImage(id);
 
 
             if (deletePImg.Success == false && deletePImg.Message == "NotFound")
