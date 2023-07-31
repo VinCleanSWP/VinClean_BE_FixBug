@@ -10,9 +10,6 @@ namespace VinClean.Repo.Models.ProcessModel
     {
         public int ProcessId { get; set; }
         public Customer Customer { get; set; }
-        public ICollection<ProcessDetail> ProcessDetails { get; set; }
-        public ICollection<ProcessSlot> ProcessSlots { get; set; }
-        public ICollection<WorkingBy> WorkingBies { get; set; }
         public string Status { get; set; }
         public string Note { get; set; }
         public bool IsDeleted { get; set; }
