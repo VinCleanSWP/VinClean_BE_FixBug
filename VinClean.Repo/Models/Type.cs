@@ -13,7 +13,5 @@ public partial class Type
 
     public string? Img { get; set; }
 
-    public string? Icon { get; set; }
-
     public virtual ICollection<Service> Services { get; set; } = new List<Service>();
 }
