@@ -9,8 +9,6 @@ public partial class OrderRequest
 
     public int? OrderId { get; set; }
 
-    public int? SlotId { get; set; }
-
     public int? OldEmployeeId { get; set; }
 
     public int? NewEmployeeId { get; set; }

@@ -21,10 +21,6 @@ public partial class Employee
 
     public DateTime? EndDate { get; set; }
 
-    public double? Latitude { get; set; }
-
-    public double? Longtitude { get; set; }
-
     public virtual Account? Account { get; set; }
 
     public virtual ICollection<Location> Locations { get; set; } = new List<Location>();

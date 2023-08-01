@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VinClean.Repo.Models;
+using VinClean.Repo.Models.ProcessModel;
 using VinClean.Service.DTO;
 using VinClean.Service.DTO.Order;
 using VinClean.Service.DTO.Process;
@@ -85,6 +86,32 @@ namespace VinCleanDemo2.Controllers
                 return StatusCode(500, ModelState);
             }
             return Ok(newProcess.Data);
+        }
+        [HttpPost("OrderRange")]
+        public async Task<ActionResult<List<OrderModeDTO>>> OrderRange(SelectOrder request)
+        {
+
+            var response = await _service.GetOrderRange(request);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Data);
+        }
+        [HttpPost("GetAllOrderRange")]
+        public async Task<ActionResult<List<OrderModeDTO>>> GetAllOrderRange(SelectOrder request)
+        {
+
+            var response = await _service.GetAllOrderbyRange(request);
+
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
+
+            return Ok(response.Data);
         }
         [HttpPut]
         public async Task<ActionResult> UpdateProcess(OrderDTO request)
