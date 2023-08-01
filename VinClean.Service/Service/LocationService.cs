@@ -94,7 +94,7 @@ namespace VinClean.Service.Service
             ServiceResponse<LocationDTO> _response = new();
             try
             {
-                var WSlot = await _repository.GetLocationByProcessId(id);
+                var WSlot = await _repository.GetLocationByOrderId(id);
                 if (WSlot == null)
                 {
                     _response.Success = false;
@@ -163,7 +163,7 @@ namespace VinClean.Service.Service
             ServiceResponse<DTO.WorkingBy.UpdateLocation> _response = new();
             //try
             //{
-                var existingWSlot = await _repository.GetLocationByProcessId(request.ProcessId);
+                var existingWSlot = await _repository.GetLocationByOrderId(request.ProcessId);
                 if (existingWSlot == null)
                 {
                     _response.Success = false;
@@ -203,7 +203,7 @@ namespace VinClean.Service.Service
             ServiceResponse<LocationDTO> _response = new();
             try
             {
-                var existingWSlot = await _repository.GetLocationByProcessId(request.ProcessId);
+                var existingWSlot = await _repository.GetLocationByOrderId(request.OrderId);
                 if (existingWSlot == null)
                 {
                     _response.Success = false;
@@ -216,7 +216,7 @@ namespace VinClean.Service.Service
                 var check1 = await _repository.UpdateLocation(existingWSlot);
 
                 //Update ProcessRequest
-                var existingProcess = await _PRrepository.GetPSById(request.ProcessId);
+                var existingProcess = await _PRrepository.GetPSById(request.OrderId);
                 if (existingProcess == null)
                 {
                     _response.Success = false;
@@ -260,7 +260,7 @@ namespace VinClean.Service.Service
             {
                 Location _newWB = new Location()
                 {
-                    OrderId = request.ProcessId,
+                    OrderId = request.OrderId,
                     EmployeeId = request.EmployeeId,
 
                 };
@@ -296,7 +296,7 @@ return _response;
             ServiceResponse<LocationDTO> _response = new();
             try
             {
-                var existingWB = await _repository.GetLocationByProcessId(id);
+                var existingWB = await _repository.GetLocationByOrderId(id);
                 if (existingWB == null)
                 {
                     _response.Success = false;

@@ -19,6 +19,7 @@ namespace VinClean.Service.DTO.Process
         public int ServiceId {get; set; }
         [Required]
         public string Address { get; set; }
+        public int BuildingId { get; set; }
         [Required]
         public string Phone { get; set; }
         [Required]

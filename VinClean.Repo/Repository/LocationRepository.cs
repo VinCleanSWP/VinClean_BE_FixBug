@@ -14,7 +14,7 @@ namespace VinClean.Repo.Repository
         Task<IEnumerable<Location>> GetLocationListByEpmId(int id);
         Task<Location> GetLocationById(int id);
         Task<bool> Check(int id);
-        Task<Location> GetLocationByProcessId(int id);
+        Task<Location> GetLocationByOrderId(int id);
         Task<bool> UpdateLocation(Location customer);
         Task<bool> AddLocation(Location slot);
         Task<bool> DeleteLocation(Location Location);
@@ -42,7 +42,7 @@ namespace VinClean.Repo.Repository
         {
             return await _context.Locations.AnyAsync(a => a.EmployeeId == id);
         }
-        async Task<Location> ILocationRepository.GetLocationByProcessId(int id)
+        async Task<Location> ILocationRepository.GetLocationByOrderId(int id)
         {
             return await _context.Locations.FirstOrDefaultAsync(a => a.OrderId == id);
         }

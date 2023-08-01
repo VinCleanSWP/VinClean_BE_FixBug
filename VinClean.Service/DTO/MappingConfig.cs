@@ -66,6 +66,10 @@ namespace VinClean.Service.DTO
             CreateMap<Repo.Models.Comment, CommentDTO>().ReverseMap();
             CreateMap<Repo.Models.Category, CategoryDTO>().ReverseMap();
 
+            CreateMap<Repo.Models.Order, OrderDTO>().ReverseMap();
+
+            CreateMap<Repo.Models.OrderImage, OrderImageDTO>().ReverseMap();
+
             CreateMap<Repo.Models.Building, BuildingDTO>().ReverseMap();
             CreateMap<Repo.Models.BuildingType, BuildingTypeDTO>().ReverseMap();
 

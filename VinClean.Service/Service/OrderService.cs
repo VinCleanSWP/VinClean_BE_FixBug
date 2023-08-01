@@ -527,7 +527,7 @@ namespace VinClean.Service.Service
             /*try
             {*/
                 var existingOrder = await _repository.GetOrderById(id);
-                var existingWorkingBy = await _WBrepository.GetLocationByProcessId(id);
+                var existingWorkingBy = await _WBrepository.GetLocationByOrderId(id);
                 var existingOrderImg = await _PImgrepository.OrderImageListByProcessId(id);
                 if (existingOrder == null)
                 {
@@ -542,8 +542,8 @@ namespace VinClean.Service.Service
                     await _PImgrepository.DeleteOrderImage(img);
                 }
 
-                if (!await _repository.DeleteOrder(existingOrder) 
-                && (!await _WBrepository.DeleteLocation(existingWorkingBy)))
+                if (!await _WBrepository.DeleteLocation(existingWorkingBy)
+                && (!await _repository.DeleteOrder(existingOrder)))
                 {
                     _response.Success = false;
                     _response.Message = "RepoError";

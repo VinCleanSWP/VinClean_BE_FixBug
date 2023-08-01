@@ -44,7 +44,7 @@ namespace VinClean.Repo.Repository
                         from ac in acGroup.DefaultIfEmpty()
                         join wb in _context.Locations on p.OrderId equals wb.OrderId into wbGroup
                         from wb in wbGroup.DefaultIfEmpty()
-                        join e in _context.Employees on wb.EmployeeId equals e.EmployeeId into eGroup
+                        join e in _context.Employees on p.EmployeeId equals e.EmployeeId into eGroup
                         from e in eGroup.DefaultIfEmpty()
                         join ac1 in _context.Accounts on e.AccountId equals ac1.AccountId into ac1Group
                         from ac1 in ac1Group.DefaultIfEmpty()
