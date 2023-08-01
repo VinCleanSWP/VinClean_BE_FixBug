@@ -14,5 +14,6 @@ namespace VinClean.Service.DTO.Building
 
         public int? TypeId { get; set; }
         public int? Floor { get; set; }
+        public int? Room { get; set; }
     }
 }

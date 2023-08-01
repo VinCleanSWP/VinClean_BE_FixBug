@@ -266,8 +266,6 @@ public partial class ServiceAppContext : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(100)
                 .HasColumnName("last_name");
-            entity.Property(e => e.Latitude).HasColumnName("latitude");
-            entity.Property(e => e.Longtitude).HasColumnName("longtitude");
             entity.Property(e => e.Phone)
                 .HasMaxLength(10)
                 .IsUnicode(false)
@@ -376,7 +374,6 @@ public partial class ServiceAppContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Image)
                 .HasMaxLength(255)
-                .IsUnicode(false)
                 .HasColumnName("image");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
