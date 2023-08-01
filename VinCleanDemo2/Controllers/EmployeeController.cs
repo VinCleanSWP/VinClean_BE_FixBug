@@ -46,20 +46,20 @@ namespace VinClean.Controllers
             }
             return Ok(EmployeeFound);
         }
-        // POST api/<EmployeeController>/
-        //[HttpPost("selectemployee")]
-        //public async Task<ActionResult<List<Employee>>> SelectEmployee(SelectEmpDTO request)
-        //{
+        //POST api/<EmployeeController>/
+        [HttpPost("selectemployee")]
+        public async Task<ActionResult<List<Employee>>> SelectEmployee(SelectEmpDTO request)
+        {
 
-        //    var response = await _service.SelectEmployeeList(request);
+            var response = await _service.SelectEmployeeList(request);
 
-        //    if (!response.Success)
-        //    {
-        //        return NotFound(response.Message);
-        //    }
+            if (!response.Success)
+            {
+                return NotFound(response.Message);
+            }
 
-        //    return Ok(response.Data);
-        //}
+            return Ok(response.Data);
+        }
         //    // POST api/<EmployeeController>
         //[HttpPost]
         //public async Task<ActionResult<Employee>> AddEmployee(RegisterEmployeeDTO request)
