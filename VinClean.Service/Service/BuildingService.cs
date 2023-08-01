@@ -15,6 +15,7 @@ namespace VinClean.Service.Service
     public interface IBuildingService
     {
         Task<ServiceResponse<List<BuildingDTO>>> GetBuildingList();
+        Task<ServiceResponse<List<BuildingDTO>>> GetBuildingListByType(int id);
         Task<ServiceResponse<BuildingDTO>> GetBuildingById(int id);
         Task<ServiceResponse<BuildingDTO>> AddBuilding(BuildingDTO request);
         Task<ServiceResponse<BuildingDTO>> UpdateBuilding(BuildingDTO request);
@@ -139,6 +140,31 @@ namespace VinClean.Service.Service
             try
             {
                 var ListBuilding = await _buildingRepository.GetBuildingList();
+                var ListBuildingDTO = new List<BuildingDTO>();
+                foreach (var Building in ListBuilding)
+                {
+                    ListBuildingDTO.Add(_mapper.Map<BuildingDTO>(Building));
+                }
+                _response.Success = true;
+                _response.Message = "OK";
+                _response.Data = ListBuildingDTO;
+            }
+            catch (Exception ex)
+            {
+                _response.Success = false;
+                _response.Message = "Error";
+                _response.Data = null;
+                _response.ErrorMessages = new List<string> { Convert.ToString(ex.Message) };
+            }
+            return _response;
+        }
+
+        public async Task<ServiceResponse<List<BuildingDTO>>> GetBuildingListByType(int id)
+        {
+            ServiceResponse<List<BuildingDTO>> _response = new();
+            try
+            {
+                var ListBuilding = await _buildingRepository.GetBuildingListByType(id);
                 var ListBuildingDTO = new List<BuildingDTO>();
                 foreach (var Building in ListBuilding)
                 {

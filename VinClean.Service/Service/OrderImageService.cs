@@ -5,25 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using VinClean.Service.DTO.WorkingSlot;
 using VinClean.Service.DTO;
-using VinClean.Service.DTO.ProcessImage;
 using AutoMapper;
 using VinClean.Repo.Repository;
 using VinClean.Repo.Models;
 using VinClean.Service.DTO.CustomerResponse;
+using VinClean.Service.DTO.ProcessImage;
 
 namespace VinClean.Service.Service
 {
-    public interface IProcessImageService
+    public interface IOrderImageService
     {
-        Task<ServiceResponse<List<ProcessImageDTO>>> ProcessImageList();
-        Task<ServiceResponse<ProcessImageDTO>> ProcessImageById(int id);
-        Task<ServiceResponse<List<ProcessImageDTO>>> ProcessImageByProcessId(int id);
-        Task<ServiceResponse<ProcessImageDTO>> DeleteProcessImage(int id);
-        Task<ServiceResponse<ProcessImageDTO>> AddProcessImage(ProcessImageDTO request);
-        Task<ServiceResponse<ProcessImageDTO>> UpdateProcessImage(ProcessImageDTO request);
-        Task<ServiceResponse<ProcessImageDTO>> UpdateImage(UpdateImage request);
+        Task<ServiceResponse<List<OrderImageDTO>>> OrderImageList();
+        Task<ServiceResponse<OrderImageDTO>> OrderImageById(int id);
+        Task<ServiceResponse<List<OrderImageDTO>>> OrderImageByOrderId(int id);
+        Task<ServiceResponse<OrderImageDTO>> DeleteOrderImage(int id);
+        Task<ServiceResponse<OrderImageDTO>> AddOrderImage(OrderImageDTO request);
+        Task<ServiceResponse<OrderImageDTO>> UpdateOrderImage(OrderImageDTO request);
+        Task<ServiceResponse<OrderImageDTO>> UpdateImage(UpdateImage request);
     }
-    public class OrderImageService : IProcessImageService
+    public class OrderImageService : IOrderImageService
     {
         private readonly IOrderImageRepository _repository;
         private readonly IMapper _mapper;
@@ -33,21 +33,21 @@ namespace VinClean.Service.Service
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<List<ProcessImageDTO>>> ProcessImageList()
+        public async Task<ServiceResponse<List<OrderImageDTO>>> OrderImageList()
         {
-            ServiceResponse<List<ProcessImageDTO>> _response = new();
+            ServiceResponse<List<OrderImageDTO>> _response = new();
             try
             {
-                var ListProcessImage = await _repository.OrderImageList();
-                var ListProcessImageDTO = new List<ProcessImageDTO>();
-                foreach (var ProcessImage in ListProcessImage)
+                var ListOrderImage = await _repository.OrderImageList();
+                var ListOrderImageDTO = new List<OrderImageDTO>();
+                foreach (var OrderImage in ListOrderImage)
                 {
-                    var ProcessImageDTO = _mapper.Map<ProcessImageDTO>(ProcessImage);
-                    ListProcessImageDTO.Add(ProcessImageDTO);
+                    var OrderImageDTO = _mapper.Map<OrderImageDTO>(OrderImage);
+                    ListOrderImageDTO.Add(OrderImageDTO);
                 }
                 _response.Success = true;
                 _response.Message = "OK";
-                _response.Data = ListProcessImageDTO;
+                _response.Data = ListOrderImageDTO;
             }
             catch (Exception ex)
             {
@@ -59,22 +59,22 @@ namespace VinClean.Service.Service
             return _response;
         }
 
-        public async Task<ServiceResponse<ProcessImageDTO>> ProcessImageById(int id)
+        public async Task<ServiceResponse<OrderImageDTO>> OrderImageById(int id)
         {
-            ServiceResponse<ProcessImageDTO> _response = new();
+            ServiceResponse<OrderImageDTO> _response = new();
             try
             {
-                var ProcessImage = await _repository.OrderImageById(id);
-                if (ProcessImage == null)
+                var OrderImage = await _repository.OrderImageById(id);
+                if (OrderImage == null)
                 {
                     _response.Success = false;
                     _response.Message = "NotFound";
                     return _response;
                 }
-                var ProcessImageDTO = _mapper.Map<ProcessImageDTO>(ProcessImage);
+                var OrderImageDTO = _mapper.Map<OrderImageDTO>(OrderImage);
                 _response.Success = true;
                 _response.Message = "OK";
-                _response.Data = ProcessImageDTO;
+                _response.Data = OrderImageDTO;
             }
             catch (Exception ex)
             {
@@ -86,21 +86,21 @@ namespace VinClean.Service.Service
             return _response;
         }
 
-        public async Task<ServiceResponse<List<ProcessImageDTO>>> ProcessImageByProcessId(int id)
+        public async Task<ServiceResponse<List<OrderImageDTO>>> OrderImageByOrderId(int id)
         {
-            ServiceResponse<List<ProcessImageDTO>> _response = new();
+            ServiceResponse<List<OrderImageDTO>> _response = new();
             try
             {
-                var ListProcessImage = await _repository.OrderImageListByProcessId(id);
-                var ListProcessImageDTO = new List<ProcessImageDTO>();
-                foreach (var ProcessImage in ListProcessImage)
+                var ListOrderImage = await _repository.OrderImageListByProcessId(id);
+                var ListOrderImageDTO = new List<OrderImageDTO>();
+                foreach (var OrderImage in ListOrderImage)
                 {
-                    var ProcessImageDTO = _mapper.Map<ProcessImageDTO>(ProcessImage);
-                    ListProcessImageDTO.Add(ProcessImageDTO);
+                    var OrderImageDTO = _mapper.Map<OrderImageDTO>(OrderImage);
+                    ListOrderImageDTO.Add(OrderImageDTO);
                 }
                 _response.Success = true;
                 _response.Message = "OK";
-                _response.Data = ListProcessImageDTO;
+                _response.Data = ListOrderImageDTO;
             }
             catch (Exception ex)
             {
@@ -112,9 +112,9 @@ namespace VinClean.Service.Service
             return _response;
         }
 
-        public async Task<ServiceResponse<ProcessImageDTO>> AddProcessImage(ProcessImageDTO request)
+        public async Task<ServiceResponse<OrderImageDTO>> AddOrderImage(OrderImageDTO request)
         {
-            ServiceResponse<ProcessImageDTO> _response = new();
+            ServiceResponse<OrderImageDTO> _response = new();
             try
             {
                 OrderImage _newPImage = new OrderImage()
@@ -133,9 +133,9 @@ namespace VinClean.Service.Service
                     return _response;
                 }
 
-                var _processImage = _mapper.Map<ProcessImageDTO>(_newPImage);
+                var _OrderImage = _mapper.Map<OrderImageDTO>(_newPImage);
                 _response.Success = true;
-                _response.Data = _processImage;
+                _response.Data = _OrderImage;
                 _response.Message = "Updated";
 
             }
@@ -149,25 +149,25 @@ namespace VinClean.Service.Service
             return _response;
         }
 
-        public async Task<ServiceResponse<ProcessImageDTO>> UpdateProcessImage(ProcessImageDTO request)
+        public async Task<ServiceResponse<OrderImageDTO>> UpdateOrderImage(OrderImageDTO request)
         {
-            ServiceResponse<ProcessImageDTO> _response = new();
+            ServiceResponse<OrderImageDTO> _response = new();
             try
             {
-                var ProcessImage = await _repository.OrderImageById(request.Id);
-                if (ProcessImage == null)
+                var OrderImage = await _repository.OrderImageById(request.Id);
+                if (OrderImage == null)
                 {
                     _response.Success = false;
                     _response.Message = "NotFound";
                     _response.Data = null;
                     return _response;
                 }
-                ProcessImage.OrderId = request.OrderId;
-                ProcessImage.Name = request.Name;
-                ProcessImage.Type = request.Type;
-                ProcessImage.Image = request.Image;
+                OrderImage.OrderId = request.OrderId;
+                OrderImage.Name = request.Name;
+                OrderImage.Type = request.Type;
+                OrderImage.Image = request.Image;
 
-                if (!await _repository.UpdateOrderImage(ProcessImage))
+                if (!await _repository.UpdateOrderImage(OrderImage))
                 {
                     _response.Success = false;
                     _response.Message = "RepoError";
@@ -175,9 +175,9 @@ namespace VinClean.Service.Service
                     return _response;
                 }
 
-                var _processImage = _mapper.Map<ProcessImageDTO>(ProcessImage);
+                var _OrderImage = _mapper.Map<OrderImageDTO>(OrderImage);
                 _response.Success = true;
-                _response.Data = _processImage;
+                _response.Data = _OrderImage;
                 _response.Message = "Updated";
 
             }
@@ -190,22 +190,22 @@ namespace VinClean.Service.Service
             }
             return _response;
         }
-        public async Task<ServiceResponse<ProcessImageDTO>> UpdateImage(UpdateImage request)
+        public async Task<ServiceResponse<OrderImageDTO>> UpdateImage(UpdateImage request)
         {
-            ServiceResponse<ProcessImageDTO> _response = new();
+            ServiceResponse<OrderImageDTO> _response = new();
             try
             {
-                var ProcessImage = await _repository.OrderImageById(request.Id);
-                if (ProcessImage == null)
+                var OrderImage = await _repository.OrderImageById(request.Id);
+                if (OrderImage == null)
                 {
                     _response.Success = false;
                     _response.Message = "NotFound";
                     _response.Data = null;
                     return _response;
                 }
-                ProcessImage.Image = request.Image;
+                OrderImage.Image = request.Image;
 
-                if (!await _repository.UpdateOrderImage(ProcessImage))
+                if (!await _repository.UpdateOrderImage(OrderImage))
                 {
                     _response.Success = false;
                     _response.Message = "RepoError";
@@ -213,9 +213,9 @@ namespace VinClean.Service.Service
                     return _response;
                 }
 
-                var _processImage = _mapper.Map<ProcessImageDTO>(ProcessImage);
+                var _OrderImage = _mapper.Map<OrderImageDTO>(OrderImage);
                 _response.Success = true;
-                _response.Data = _processImage;
+                _response.Data = _OrderImage;
                 _response.Message = "Updated";
 
             }
@@ -229,14 +229,14 @@ namespace VinClean.Service.Service
             return _response;
         }
 
-        public async Task<ServiceResponse<ProcessImageDTO>> DeleteProcessImage(int id)
+        public async Task<ServiceResponse<OrderImageDTO>> DeleteOrderImage(int id)
 
         {
-            ServiceResponse<ProcessImageDTO> _response = new();
+            ServiceResponse<OrderImageDTO> _response = new();
             try
             {
-                var ProcessImage = await _repository.OrderImageById(id);
-                if (ProcessImage == null)
+                var OrderImage = await _repository.OrderImageById(id);
+                if (OrderImage == null)
                 {
                     _response.Success = false;
                     _response.Message = "NotFound";
@@ -245,7 +245,7 @@ namespace VinClean.Service.Service
                 }
 
 
-                if (!await _repository.DeleteOrderImage(ProcessImage))
+                if (!await _repository.DeleteOrderImage(OrderImage))
                 {
                     _response.Success = false;
                     _response.Message = "RepoError";

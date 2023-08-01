@@ -11,6 +11,7 @@ namespace VinClean.Repo.Repository
     public interface IBuildingRepository
     {
         Task<ICollection<Building>> GetBuildingList();
+        Task<ICollection<Building>> GetBuildingListByType(int id);
         Task<Building> GetBuildingById(int id);
         Task<bool> AddBuilding(Building role);
         Task<bool> DeleteBuilding(Building role);
@@ -47,6 +48,10 @@ namespace VinClean.Repo.Repository
             return await _context.Buildings.ToListAsync();
         }
 
+        async Task<ICollection<Building>> IBuildingRepository.GetBuildingListByType(int id)
+        {
+            return await _context.Buildings.Where(e=>e.TypeId == id).ToListAsync();
+        }
 
         async Task<bool> IBuildingRepository.UpdateBuilding(Building role)
         {

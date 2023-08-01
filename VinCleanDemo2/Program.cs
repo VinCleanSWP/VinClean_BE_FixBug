@@ -91,7 +91,7 @@ builder.Services.AddScoped<ITypeService, TypeService>();
 builder.Services.AddScoped<IWorkingByService, LocationService>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 
-builder.Services.AddScoped<IProcessImageService, OrderImageService>();
+builder.Services.AddScoped<IOrderImageService, OrderImageService>();
 builder.Services.AddScoped<IOrderImageRepository, OrderImageRepository>();
 
 builder.Services.AddScoped<IBuildingRepository, BuildingRepository>();
