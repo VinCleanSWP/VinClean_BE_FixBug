@@ -9,7 +9,7 @@ namespace VinClean.Service.DTO.WorkingSlot
 {
     public class LocationDTO
     {
-        public int ProcessId { get; set; }
+        public int OrderId { get; set; }
         public int EmployeeId { get; set; }
         public double Latitude { get; set; }
 
