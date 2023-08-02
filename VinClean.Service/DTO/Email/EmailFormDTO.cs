@@ -10,7 +10,7 @@ namespace VinClean.Service.DTO.Email
     public class EmailFormDTO
     {
         [Required]
-        public int ProcessId { get; set; }
+        public int OrderId { get; set; }
         [EmailAddress]
         public string To { get; set; } = string.Empty;
         public string Subject { get; set; } = string.Empty; 

@@ -346,7 +346,7 @@ namespace VinClean.Service.Service
             ServiceResponse<AccountDTO> _response = new();
             try
             {
-                var process = await _process.GetAllInfoById(request.ProcessId);
+                var process = await _process.GetAllInfoById(request.OrderId);
                 if (process == null)
                 {
                     _response.Success = false;
@@ -447,7 +447,7 @@ namespace VinClean.Service.Service
             ServiceResponse<AccountDTO> _response = new();
             try
             {
-                var process = await _process.GetAllInfoById(request.ProcessId);
+                var process = await _process.GetAllInfoById(request.OrderId);
                 if ( process == null)
                 {
                     _response.Success = false;
@@ -549,7 +549,7 @@ namespace VinClean.Service.Service
             try
             {
                 var checkemail = await _Accrepository.GetbyEmail(request.To);
-                var process = await _process.GetAllInfoById(request.ProcessId);
+                var process = await _process.GetAllInfoById(request.OrderId);
                 if (checkemail == null && process == null)
                 {
                     _response.Success = false;
@@ -649,7 +649,7 @@ namespace VinClean.Service.Service
             ServiceResponse<AccountDTO> _response = new();
             try
             {
-                var process = await _process.GetAllInfoById(request.ProcessId);
+                var process = await _process.GetAllInfoById(request.OrderId);
                 if (process == null)
                 {
                     _response.Success = false;

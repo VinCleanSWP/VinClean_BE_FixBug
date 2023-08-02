@@ -21,9 +21,9 @@ public partial class Order
 
     public DateTime? CreatedDate { get; set; }
 
-    public DateTime? ModifiedDate { get; set; }
+    public DateTime? CancelDate { get; set; }
 
-    public int? ModifiedBy { get; set; }
+    public int? CancelBy { get; set; }
 
     public TimeSpan? StartWorking { get; set; }
 
@@ -49,15 +49,17 @@ public partial class Order
 
     public int? EmployeeId { get; set; }
 
+    public string? ReasonCancel { get; set; }
+
     public virtual Building? Building { get; set; }
+
+    public virtual Account? CancelByNavigation { get; set; }
 
     public virtual Customer? Customer { get; set; }
 
     public virtual Employee? Employee { get; set; }
 
     public virtual ICollection<Location> Locations { get; set; } = new List<Location>();
-
-    public virtual Account? ModifiedByNavigation { get; set; }
 
     public virtual ICollection<OrderImage> OrderImages { get; set; } = new List<OrderImage>();
 

@@ -314,6 +314,7 @@ public partial class ServiceAppContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("address");
             entity.Property(e => e.BuildingId).HasColumnName("Building_id");
+            entity.Property(e => e.CancelDate).HasColumnType("date");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("date");
@@ -323,7 +324,6 @@ public partial class ServiceAppContext : DbContext
             entity.Property(e => e.IsDeleted)
                 .HasDefaultValueSql("((0))")
                 .HasColumnName("isDeleted");
-            entity.Property(e => e.ModifiedDate).HasColumnType("date");
             entity.Property(e => e.Note)
                 .HasColumnType("ntext")
                 .HasColumnName("note");
@@ -334,6 +334,7 @@ public partial class ServiceAppContext : DbContext
             entity.Property(e => e.PointUsed).HasColumnName("Point_used");
             entity.Property(e => e.Price).HasColumnType("money");
             entity.Property(e => e.RatingId).HasColumnName("Rating_id");
+            entity.Property(e => e.ReasonCancel).HasMaxLength(255);
             entity.Property(e => e.ServiceId).HasColumnName("service_id");
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
@@ -344,6 +345,10 @@ public partial class ServiceAppContext : DbContext
                 .HasForeignKey(d => d.BuildingId)
                 .HasConstraintName("FK_orders_building");
 
+            entity.HasOne(d => d.CancelByNavigation).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.CancelBy)
+                .HasConstraintName("FK__Order__ModifiedB__71D1E811");
+
             entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK__Order__customer___70DDC3D8");
@@ -351,10 +356,6 @@ public partial class ServiceAppContext : DbContext
             entity.HasOne(d => d.Employee).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.EmployeeId)
                 .HasConstraintName("FK_orders_employee");
-
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.ModifiedBy)
-                .HasConstraintName("FK__Order__ModifiedB__71D1E811");
 
             entity.HasOne(d => d.Rating).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.RatingId)
@@ -408,7 +409,6 @@ public partial class ServiceAppContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("satus");
-            entity.Property(e => e.SlotId).HasColumnName("slot_id");
 
             entity.HasOne(d => d.CreateByNavigation).WithMany(p => p.OrderRequests)
                 .HasForeignKey(d => d.CreateBy)

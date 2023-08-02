@@ -45,6 +45,8 @@ namespace VinClean.Repo.Repository
                         from e in eGroup.DefaultIfEmpty()
                         join ac1 in _context.Accounts on e.AccountId equals ac1.AccountId into ac1Group
                         from ac1 in ac1Group.DefaultIfEmpty()
+                        join ac2 in _context.Accounts on p.CancelBy equals ac2.AccountId into ac2Group
+                        from ac2 in ac2Group.DefaultIfEmpty()
                         join t in _context.Types on s.TypeId equals t.TypeId into tGroup
                         from t in tGroup.DefaultIfEmpty()
                         where p.IsDeleted == false
@@ -66,7 +68,11 @@ namespace VinClean.Repo.Repository
                             StartWorking = p.StartWorking,
                             EndWorking = p.EndWorking,
                             CreatedDate = p.CreatedDate,
-                            ModifiedBy = p.ModifiedBy,
+                            CancelDate = p.CancelDate,
+                            CancelBy = p.CancelBy,
+                            CancelByName = ac2.Name,
+                            CancelByRole = ac2.Role.Name,
+                            ReasonCancel = p.ReasonCancel,
                             RatingId = p.RatingId,
                             ServiceId = s.ServiceId,
                             ServiceName = s.Name,
@@ -87,7 +93,7 @@ namespace VinClean.Repo.Repository
                             EmployeePhone = e.Phone,
                             EmployeeEmail = ac1.Email,
                             Latitude = wb.Latitude,
-                            Longtitude = wb.Longtitude
+                            Longtitude = wb.Longtitude,
                         };
             return await query.ToListAsync();
         }
@@ -118,6 +124,8 @@ namespace VinClean.Repo.Repository
                         from e in eGroup.DefaultIfEmpty()
                         join ac1 in _context.Accounts on e.AccountId equals ac1.AccountId into ac1Group
                         from ac1 in ac1Group.DefaultIfEmpty()
+                        join ac2 in _context.Accounts on p.CancelBy equals ac2.AccountId into ac2Group
+                        from ac2 in ac2Group.DefaultIfEmpty()
                         join t in _context.Types on s.TypeId equals t.TypeId into tGroup
                         from t in tGroup.DefaultIfEmpty()
                         where p.OrderId == id && p.IsDeleted == false
@@ -139,7 +147,11 @@ namespace VinClean.Repo.Repository
                             StartWorking = p.StartWorking,
                             EndWorking = p.EndWorking,
                             CreatedDate = p.CreatedDate,
-                            ModifiedBy = p.ModifiedBy,
+                            CancelDate = p.CancelDate,
+                            CancelBy = p.CancelBy,
+                            CancelByName = ac2.Name,
+                            CancelByRole = ac2.Role.Name,
+                            ReasonCancel = p.ReasonCancel,
                             RatingId = p.RatingId,
                             ServiceId = s.ServiceId,
                             ServiceName = s.Name,
@@ -160,7 +172,8 @@ namespace VinClean.Repo.Repository
                             EmployeePhone = e.Phone,
                             EmployeeEmail = ac1.Email,
                             Latitude = wb.Latitude,
-                            Longtitude = wb.Longtitude
+                            Longtitude = wb.Longtitude,
+                           
                         };
             return await query.FirstOrDefaultAsync();
 

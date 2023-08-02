@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VinClean.Repo.Models;
 using VinClean.Repo.Repository;
 using VinClean.Service.DTO;
+using VinClean.Service.DTO.Order;
 using VinClean.Service.DTO.WorkingBy;
 using VinClean.Service.DTO.WorkingSlot;
 
@@ -27,12 +28,14 @@ namespace VinClean.Service.Service
     {
         private readonly ILocationRepository _repository;
         private readonly IOrderRequestRepository _PRrepository;
+        private readonly IOrderService _Orderrepository;
         private readonly IMapper _mapper;
-        public LocationService(ILocationRepository repository, IMapper mapper, IOrderRequestRepository pRrepository)
+        public LocationService(ILocationRepository repository, IMapper mapper, IOrderRequestRepository pRrepository, IOrderService orderrepository)
         {
             _repository = repository;
             _mapper = mapper;
             _PRrepository = pRrepository;
+            _Orderrepository = orderrepository;
         }
 
         public async Task<ServiceResponse<List<LocationDTO>>> GetWBList()
@@ -258,25 +261,33 @@ namespace VinClean.Service.Service
             ServiceResponse<LocationDTO> _response = new();
             try
             {
-                Location _newWB = new Location()
+                if (request != null)
                 {
-                    OrderId = request.OrderId,
-                    EmployeeId = request.EmployeeId,
+                    Location _newWB = new Location()
+                    {
+                        OrderId = request.OrderId,
+                        EmployeeId = request.EmployeeId,
 
-                };
+                    };
+                    AssignEmployeeDTO assign = new AssignEmployeeDTO()
+                    {
+                        OrderId = request.OrderId,
+                        EmployeeId = request.EmployeeId
+                    };
+                    await _Orderrepository.AssignEmployee(assign);
+                    if (!await _repository.AddLocation(_newWB))
+                    {
+                        _response.Error = "RepoError";
+                        _response.Success = false;
+                        _response.Data = null;
+                        return _response;
+                    }
 
-                if (!await _repository.AddLocation(_newWB))
-                {
-                    _response.Error = "RepoError";
-                    _response.Success = false;
-                    _response.Data = null;
-                    return _response;
-                }
-
-                _response.Success = true;
-                _response.Data = _mapper.Map<LocationDTO>(_newWB);
-                _response.Message = "Created";
-
+                    _response.Success = true;
+                    _response.Data = _mapper.Map<LocationDTO>(_newWB);
+                    _response.Message = "Created";
+                } 
+         
         }
             catch (Exception ex)
             {

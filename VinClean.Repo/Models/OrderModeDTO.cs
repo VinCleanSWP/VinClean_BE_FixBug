@@ -25,7 +25,10 @@ namespace VinClean.Repo.Models
         public TimeSpan? StartWorking { get; set; }
         public TimeSpan? EndWorking { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public int? ModifiedBy { get; set; }
+        public DateTime? CancelDate { get; set; }
+        public int? CancelBy { get; set; }
+        public string? CancelByName { get; set; }
+        public string? CancelByRole { get; set; }
         public int? ServiceId { get; set; }
         public string? ServiceName { get; set; }
         public decimal? CostPerSlot { get; set; }
@@ -46,5 +49,6 @@ namespace VinClean.Repo.Models
         public string? EmployeeEmail { get; set; }
         public double? Latitude { get; set; }
         public double? Longtitude { get; set; }
+        public string? ReasonCancel { get; set; }
     }
 }
