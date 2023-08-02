@@ -314,7 +314,7 @@ public partial class ServiceAppContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("address");
             entity.Property(e => e.BuildingId).HasColumnName("Building_id");
-            entity.Property(e => e.CancelDate).HasColumnType("date");
+            entity.Property(e => e.CancelDate).HasColumnType("datetime");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("date");

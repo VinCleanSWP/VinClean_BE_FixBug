@@ -30,7 +30,7 @@ namespace VinClean.Service.Service
         Task<ServiceResponse<OrderDTO>> UpdateStartWorking(ProcessStartWorking Order);
         Task<ServiceResponse<OrderDTO>> UpdateEndWorking(ProcessEndWorking Order);
         Task<ServiceResponse<OrderDTO>> UpdateStatusCompleted(int id);
-        Task<ServiceResponse<OrderDTO>> DeniedOrder(int id);
+        Task<ServiceResponse<OrderDTO>> CancelOrder(CancelOrderDTO cancelOrder);
         Task<ServiceResponse<OrderDTO>> DeleteOrder(int id);
         Task<ServiceResponse<OrderDTO>> AssignEmployee(AssignEmployeeDTO request);
         Task<ServiceResponse<List<OrderModeDTO>>> GetOrderRange(SelectOrder select);
@@ -42,7 +42,7 @@ namespace VinClean.Service.Service
         private readonly IServiceRepository _serviceRepo;
         private readonly IOrderRepository _repository;
         private readonly ICustomerRepository _Curepository;
-        private readonly ILocationRepository _WBrepository;
+        private readonly ILocationRepository _Lrepository;
         private readonly IOrderImageRepository _PImgrepository;
         public readonly IMapper _mapper;
         public OrderService(IOrderRepository repository, IMapper mapper, 
@@ -52,7 +52,7 @@ namespace VinClean.Service.Service
             _mapper = mapper;
             _serviceRepo = serviceRepo;
             _Curepository = Curepository;
-            _WBrepository = WBrepository;
+            _Lrepository = WBrepository;
             _PImgrepository = pImgrepository;
         }
 
@@ -189,6 +189,11 @@ namespace VinClean.Service.Service
             };
             await _PImgrepository.AddOrderImage(_OrderImage3);
 
+            Location location = new Location()
+            {
+                OrderId = _newOrder.OrderId,
+            };
+            await _Lrepository.AddLocation(location);
 
             if (!check1&&!check3)
                 {
@@ -482,12 +487,12 @@ namespace VinClean.Service.Service
             }
             return _response;
         }
-        public async Task<ServiceResponse<OrderDTO>> DeniedOrder(int id)
+        public async Task<ServiceResponse<OrderDTO>> CancelOrder(CancelOrderDTO cancelOrder)
         {
             ServiceResponse<OrderDTO> _response = new();
             try
             {
-                var existingOrder = await _repository.GetOrderById(id);
+                var existingOrder = await _repository.GetOrderById(cancelOrder.OrderId);
                 if (existingOrder == null)
                 {
                     _response.Success = false;
@@ -496,7 +501,10 @@ namespace VinClean.Service.Service
                     return _response;
                 }
 
-                existingOrder.Status = "Denied";
+                existingOrder.Status = "Cancel";
+                existingOrder.CancelBy = cancelOrder.CancelBy;
+                existingOrder.CancelDate = DateTime.UtcNow;
+                existingOrder.ReasonCancel = cancelOrder.ReasonCancel;
 
                 if (!await _repository.UpdateOrder(existingOrder))
                 {
@@ -527,7 +535,7 @@ namespace VinClean.Service.Service
             /*try
             {*/
                 var existingOrder = await _repository.GetOrderById(id);
-                var existingWorkingBy = await _WBrepository.GetLocationByOrderId(id);
+                var existingWorkingBy = await _Lrepository.GetLocationByOrderId(id);
                 var existingOrderImg = await _PImgrepository.OrderImageListByProcessId(id);
                 if (existingOrder == null)
                 {
@@ -542,7 +550,7 @@ namespace VinClean.Service.Service
                     await _PImgrepository.DeleteOrderImage(img);
                 }
 
-                if (!await _WBrepository.DeleteLocation(existingWorkingBy)
+                if (!await _Lrepository.DeleteLocation(existingWorkingBy)
                 && (!await _repository.DeleteOrder(existingOrder)))
                 {
                     _response.Success = false;

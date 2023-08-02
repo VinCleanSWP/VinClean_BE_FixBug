@@ -28,9 +28,9 @@ namespace VinClean.Service.Service
     {
         private readonly ILocationRepository _repository;
         private readonly IOrderRequestRepository _PRrepository;
-        private readonly IOrderService _Orderrepository;
+        private readonly IOrderRepository _Orderrepository;
         private readonly IMapper _mapper;
-        public LocationService(ILocationRepository repository, IMapper mapper, IOrderRequestRepository pRrepository, IOrderService orderrepository)
+        public LocationService(ILocationRepository repository, IMapper mapper, IOrderRequestRepository pRrepository, IOrderRepository orderrepository)
         {
             _repository = repository;
             _mapper = mapper;
@@ -207,6 +207,7 @@ namespace VinClean.Service.Service
             try
             {
                 var existingWSlot = await _repository.GetLocationByOrderId(request.OrderId);
+                var existingOrder = await _Orderrepository.GetOrderById(request.OrderId);
                 if (existingWSlot == null)
                 {
                     _response.Success = false;
@@ -215,8 +216,11 @@ namespace VinClean.Service.Service
                     return _response;
                 }
                 existingWSlot.EmployeeId = request.EmployeeId;
+                existingOrder.EmployeeId = request.EmployeeId;
 
                 var check1 = await _repository.UpdateLocation(existingWSlot);
+                var check3 = await _Orderrepository.UpdateOrder(existingOrder);
+
 
                 //Update ProcessRequest
                 var existingProcess = await _PRrepository.GetPSById(request.OrderId);
@@ -232,7 +236,7 @@ namespace VinClean.Service.Service
                 var check2 = await _PRrepository.UpdatePS(existingProcess);
                 //Update ProcessRequest
 
-                if (!check1 && !check2)
+                if (!check1 && !check2 && !check3)
                 {
                     _response.Success = false;
                     _response.Message = "RepoError";
@@ -269,12 +273,11 @@ namespace VinClean.Service.Service
                         EmployeeId = request.EmployeeId,
 
                     };
-                    AssignEmployeeDTO assign = new AssignEmployeeDTO()
-                    {
-                        OrderId = request.OrderId,
-                        EmployeeId = request.EmployeeId
-                    };
-                    await _Orderrepository.AssignEmployee(assign);
+                    //AssignEmployeeDTO assign = new AssignEmployeeDTO()
+                    //{
+                    //    OrderId = request.OrderId,
+                    //    EmployeeId = request.EmployeeId
+                    //};
                     if (!await _repository.AddLocation(_newWB))
                     {
                         _response.Error = "RepoError";

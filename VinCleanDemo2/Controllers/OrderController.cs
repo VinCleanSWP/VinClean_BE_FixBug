@@ -245,8 +245,8 @@ namespace VinCleanDemo2.Controllers
 
         }
 
-        [HttpPut("Denied")]
-        public async Task<ActionResult> DeniedProcess(int processid)
+        [HttpPut("Cancel")]
+        public async Task<ActionResult> CancelOrder(CancelOrderDTO cancelOrder)
         {
             //if (request == null)
             //{
@@ -254,7 +254,7 @@ namespace VinCleanDemo2.Controllers
             //}
 
 
-            var updateProcess = await _service.DeniedOrder(processid);
+            var updateProcess = await _service.CancelOrder(cancelOrder);
 
             if (updateProcess.Success == false && updateProcess.Message == "NotFound")
             {
