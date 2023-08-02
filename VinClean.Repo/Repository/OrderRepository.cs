@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VinClean.Repo.Models;
+using VinClean.Repo.Models.ProcessModel;
 
 // lay table
 
@@ -18,6 +19,8 @@ namespace VinClean.Repo.Repository
         Task<bool> AddOrder(Order order);
         Task<bool> UpdateOrder(Order order);
         Task<bool> DeleteOrder(Order order);
+        Task<ICollection<OrderModeDTO>> SelectOrder(SelectOrder select);
+        Task<ICollection<OrderModeDTO>> SelectAllOrder(SelectOrder select);
 
     }
     public class OrderRepository : IOrderRepository
@@ -236,6 +239,78 @@ namespace VinClean.Repo.Repository
         {
             _context.Orders.Remove(Order);
             return await _context.SaveChangesAsync() > 0 ? true : false;
+        }
+        public async Task<ICollection<OrderModeDTO>> SelectOrder(SelectOrder select)
+        {
+            int employeeId = select.EmployeeId;
+            DateTime startDate = DateTime.Parse(select.StartMonth);
+            DateTime endDate = DateTime.Parse(select.EndMonth);
+
+            var query = (from o in _context.Orders
+                         join c in _context.Customers on o.CustomerId equals c.CustomerId
+                         join e in _context.Employees on o.EmployeeId equals e.EmployeeId
+                         join s in _context.Services on o.ServiceId equals s.ServiceId
+                         join t in _context.Types on s.TypeId equals t.TypeId
+                         join ac2 in _context.Accounts on e.AccountId equals ac2.AccountId
+                         where (o.Date >= startDate && o.Date <= endDate) && o.EmployeeId == employeeId
+                         select new OrderModeDTO
+                         {
+                             Address = c.Address,
+                             Name = c.FirstName + c.LastName,
+                             TypeName = t.Type1,
+                             SubPrice = o.SubPrice,
+                             Phone = c.Phone,
+                             PointUsed = (int)o.PointUsed,
+                             StartTime = o.StarTime,
+                             EndTime = o.EndTime,
+                             OrderId = o.OrderId,
+                             CreatedDate = o.CreatedDate,
+                             StartWorking = o.StartWorking,
+                             EndWorking = o.EndWorking,
+                             Price = o.Price,
+                             ServiceName = s.Name,
+                             EmployeeName = e.FirstName + e.LastName,
+                             EmployeeId = e.EmployeeId,
+                             EmployeeImage = ac2.Img
+                         });
+            return await query.ToListAsync();
+        }
+
+        public async Task<ICollection<OrderModeDTO>> SelectAllOrder(SelectOrder select)
+        {
+            int employeeId = select.EmployeeId;
+            DateTime startDate = DateTime.Parse(select.StartMonth);
+            DateTime endDate = DateTime.Parse(select.EndMonth);
+
+            var query = (from o in _context.Orders
+                         join c in _context.Customers on o.CustomerId equals c.CustomerId
+                         join e in _context.Employees on o.EmployeeId equals e.EmployeeId
+                         join s in _context.Services on o.ServiceId equals s.ServiceId
+                         join t in _context.Types on s.TypeId equals t.TypeId
+                         join ac2 in _context.Accounts on e.AccountId equals ac2.AccountId
+                         where (o.Date >= startDate && o.Date <= endDate)
+                         select new OrderModeDTO
+                         {
+                             Address = c.Address,
+                             Name = c.FirstName + c.LastName,
+                             TypeName = t.Type1,
+                             SubPrice = o.SubPrice,
+                             Phone = c.Phone,
+                             PointUsed = (int)o.PointUsed,
+                             StartTime = o.StarTime,
+                             EndTime = o.EndTime,
+                             OrderId = o.OrderId,
+                             CreatedDate = o.CreatedDate,
+                             StartWorking = o.StartWorking,
+                             EndWorking = o.EndWorking,
+                             Price = o.Price,
+                             ServiceName = s.Name,
+                             EmployeeName = e.FirstName + e.LastName,
+                             EmployeeId = e.EmployeeId,
+                             EmployeeImage = ac2.Img
+
+                         });
+            return await query.ToListAsync();
         }
     }
 }

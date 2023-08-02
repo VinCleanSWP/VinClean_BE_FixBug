@@ -130,11 +130,10 @@ namespace VinClean.Repo.Repository
 
             var check = from r in _context.Ratings
                         join s in _context.Services on r.ServiceId equals s.ServiceId
-                        join od in _context.Orders on s.ServiceId equals od.ServiceId
-                        join o in _context.Orders on od.OrderId equals o.OrderId
+                        join o in _context.Orders on s.ServiceId equals o.ServiceId
                         join c in _context.Customers on o.CustomerId equals c.CustomerId
-                        where o.CustomerId == customerId && od.ServiceId == serviceId
-                        select od.ServiceId;
+                        where o.CustomerId == customerId && o.ServiceId == serviceId
+                        select o.ServiceId;
             return await check.AnyAsync();
         }
     }

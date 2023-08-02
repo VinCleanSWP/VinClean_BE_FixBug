@@ -13,6 +13,7 @@ using VinClean.Service.DTO.WorkingSlot;
 using VinClean.Service.DTO.WorkingBy;
 using VinClean.Service.DTO.Employee;
 using VinClean.Service.DTO.Process;
+using VinClean.Repo.Models.ProcessModel;
 
 // Pass data from Repo to Controller
 
@@ -32,6 +33,8 @@ namespace VinClean.Service.Service
         Task<ServiceResponse<OrderDTO>> DeniedOrder(int id);
         Task<ServiceResponse<OrderDTO>> DeleteOrder(int id);
         Task<ServiceResponse<OrderDTO>> AssignEmployee(AssignEmployeeDTO request);
+        Task<ServiceResponse<List<OrderModeDTO>>> GetOrderRange(SelectOrder select);
+        Task<ServiceResponse<List<OrderModeDTO>>> GetAllOrderbyRange(SelectOrder select);
     }
 
     public class OrderService : IOrderService
@@ -561,6 +564,59 @@ namespace VinClean.Service.Service
                 _response.Message = "Error";
                 _response.ErrorMessages = new List<string> { Convert.ToString(ex.Message) };
             }*/
+            return _response;
+        }
+        public async Task<ServiceResponse<List<OrderModeDTO>>> GetOrderRange(SelectOrder select)
+        {
+            ServiceResponse<List<OrderModeDTO>> _response = new();
+            try
+            {
+                var ListOrder = await _repository.SelectOrder(select);
+                var ListOrderDTO = new List<OrderModeDTO>();
+                foreach (var order in ListOrder)
+                {
+                    ListOrderDTO.Add(_mapper.Map<OrderModeDTO>(order));
+                }
+
+                _response.Success = true;
+                _response.Message = "OK";
+                _response.Data = ListOrderDTO;
+            }
+            catch (Exception ex)
+            {
+                _response.Success = false;
+                _response.Message = "Error";
+                _response.Data = null;
+                _response.ErrorMessages = new List<string> { Convert.ToString(ex.Message)
+            };
+            }
+            return _response;
+        }
+
+        public async Task<ServiceResponse<List<OrderModeDTO>>> GetAllOrderbyRange(SelectOrder select)
+        {
+            ServiceResponse<List<OrderModeDTO>> _response = new();
+            try
+            {
+                var ListOrder = await _repository.SelectAllOrder(select);
+                var ListOrderDTO = new List<OrderModeDTO>();
+                foreach (var order in ListOrder)
+                {
+                    ListOrderDTO.Add(_mapper.Map<OrderModeDTO>(order));
+                }
+
+                _response.Success = true;
+                _response.Message = "OK";
+                _response.Data = ListOrderDTO;
+            }
+            catch (Exception ex)
+            {
+                _response.Success = false;
+                _response.Message = "Error";
+                _response.Data = null;
+                _response.ErrorMessages = new List<string> { Convert.ToString(ex.Message)
+            };
+            }
             return _response;
         }
     }
